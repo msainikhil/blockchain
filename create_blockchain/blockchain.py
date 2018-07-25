@@ -4,20 +4,27 @@
 import datetime
 import hashlib
 import json
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
+import requests
+from uuid import uuid4
+from urllib.parse import urlparse
 
 # Building a blockchain
 class Blockchain:
     
     def __init__(self):
         self.chain = []
+        self.transactions = []
         self.create_block(proof = 1, previous_hash = '0')
+
     
     def create_block(self, proof, previous_hash):
         block = {'index' : len(self.chain) + 1,
                  'timestamp' : str(datetime.datetime.now()),
                  'proof' : proof,
-                 'previous_hash' : previous_hash}
+                 'previous_hash' : previous_hash,
+                 'transactions' : self.transactions}
+        self.transactions = []
         self.chain.append(block)
         return block
     
@@ -55,6 +62,13 @@ class Blockchain:
             block_index += 1
         return True
 
+    def add_transaction(self, sender, reciever, amount):
+        self.transactions.append({'sender' : sender,
+                                  'receiver' : receiver,
+                                  'amount' : amount})
+        previous_block = self.get_previous_block()
+        return previous_block['index'] + 1
+
 #Mining our BlockChain    
 app = Flask(__name__)
     
@@ -88,39 +102,4 @@ def is_valid():
     response = {'is_valid' : blockchain.is_chain_valid(blockchain.chain)}
     return jsonify(response), 200
         
-        
 app.run(host = '0.0.0.0', port = 50000)
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-    
-    
-    
-    
-    
