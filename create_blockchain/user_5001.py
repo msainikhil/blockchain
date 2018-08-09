@@ -106,7 +106,7 @@ def mine_block():
     previous_proof = previous_block['proof']
     proof = blockchain.proof_of_work(previous_proof)
     previous_hash = blockchain.hash(previous_block)
-    blockchain.add_transaction(sender = node_address, receiver = 'Nikhil', amount = 1)
+    blockchain.add_transaction(sender = node_address, receiver = 'user_5001', amount = 1)
     block = blockchain.create_block(proof, previous_hash)
     response = {'message' : 'Congratulations, you just mined a block!',
                 'index' : block['index'],
@@ -151,7 +151,7 @@ def connect_node():
         return "No node", 400
     for node in nodes:
         blockchain.add_node(node)
-    response = {'message' : "All nodes are connected successfully",
+    response = {'message' : "All nodes are connected successfullt",
                 'total_nodes' : list(blockchain.nodes)}
     return jsonify(response), 201
     
@@ -168,4 +168,4 @@ def replace_chain():
     return jsonify(response), 200
 
 
-app.run(host = '0.0.0.0', port = 50000)
+app.run(host = '0.0.0.0', port = 5001)
